@@ -16,12 +16,12 @@
 - [x] Add loading and empty/error states to ProfilePage before showing not-found UI
 - [x] Replace hardcoded username rating badges with real per-user rating data wherever badges appear
 - [x] Create GitHub repository for Smartgen Platform Community (visibility updated to public for GitHub Pages)
-- [x] Implement webhook notification triggers on accepted solutions
+- [x] Implement internal owner notification triggers on accepted solutions
 - [x] Implement admin view for category creation and reordering
 - [x] Change Smartgen Platform Community repository visibility from private to public for GitHub Pages hosting
 - [x] Verify public repository contains no credentials, environment files, or secret values
 - [ ] Implement a real accepted-solution webhook integration with configurable destination, signed delivery, and delivery regression coverage
-- [ ] Fix GitHub Pages serving README instead of the built SmartGen Community React frontend
-- [ ] Verify GitHub Pages deploys the dist/public artifact and the Manus backend URL is configured without exposing secrets
-- [ ] Replace the Manus-only logo storage path with the official public SmartGen logo asset for GitHub Pages
-- [ ] Make the Pages workflow consume the backend URL from repository settings and reject non-HTTP Manus checkpoint URIs
+- [x] Fix GitHub Pages serving README instead of the built SmartGen Community React frontend
+- [x] Verify GitHub Pages deploys the dist/public artifact and the Manus backend URL is configured without exposing secrets
+- [x] Replace the Manus-only logo storage path with the official public SmartGen logo asset for GitHub Pages
+- [x] Make the Pages workflow consume the backend URL from repository settings and reject non-HTTP Manus checkpoint URIs
