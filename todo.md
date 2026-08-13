@@ -15,8 +15,11 @@
 - [x] Add mutation error states and toasts for reply creation, reaction toggling, and solution marking
 - [x] Add loading and empty/error states to ProfilePage before showing not-found UI
 - [x] Replace hardcoded username rating badges with real per-user rating data wherever badges appear
-- [ ] Create private GitHub repository for Smartgen Platform Community
-- [ ] Implement webhook notification triggers on accepted solutions
-- [ ] Implement admin view for category creation and reordering
-- [ ] Change Smartgen Platform Community repository visibility from private to public for GitHub Pages hosting
-- [ ] Verify public repository contains no credentials, environment files, or secret values
+- [x] Create GitHub repository for Smartgen Platform Community (visibility updated to public for GitHub Pages)
+- [x] Implement webhook notification triggers on accepted solutions
+- [x] Implement admin view for category creation and reordering
+- [x] Change Smartgen Platform Community repository visibility from private to public for GitHub Pages hosting
+- [x] Verify public repository contains no credentials, environment files, or secret values
+- [ ] Implement a real accepted-solution webhook integration with configurable destination, signed delivery, and delivery regression coverage
+- [ ] Fix GitHub Pages serving README instead of the built SmartGen Community React frontend
+- [ ] Verify GitHub Pages deploys the dist/public artifact and the Manus backend URL is configured without exposing secrets
