@@ -23,3 +23,5 @@
 - [ ] Implement a real accepted-solution webhook integration with configurable destination, signed delivery, and delivery regression coverage
 - [ ] Fix GitHub Pages serving README instead of the built SmartGen Community React frontend
 - [ ] Verify GitHub Pages deploys the dist/public artifact and the Manus backend URL is configured without exposing secrets
+- [ ] Replace the Manus-only logo storage path with the official public SmartGen logo asset for GitHub Pages
+- [ ] Make the Pages workflow consume the backend URL from repository settings and reject non-HTTP Manus checkpoint URIs

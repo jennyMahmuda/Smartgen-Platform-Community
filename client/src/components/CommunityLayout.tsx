@@ -27,7 +27,7 @@ export function LoginPrompt() {
       <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col px-5 py-6 sm:px-8 lg:px-12">
         <header className="flex items-center justify-between border-b border-white/10 pb-5">
           <Link href="/" className="flex items-center gap-3">
-            <img src="/manus-storage/smartgen-logo-icon_11b9ba1e.svg" alt="SmartGen" className="h-9 w-9 object-contain" />
+            <img src="https://raw.githubusercontent.com/bayzed123/SmartGenQR.oi/main/assets/img/logo-icon.svg" alt="SmartGen" className="h-9 w-9 object-contain" />
             <span className="text-lg font-bold tracking-tight">Smart<span className="text-cyan-300">Gen</span></span>
           </Link>
           <Button onClick={() => startLogin()} className="rounded-full bg-white px-5 text-sm font-semibold text-slate-950 hover:bg-cyan-100">Sign in</Button>
@@ -87,7 +87,7 @@ export default function CommunityLayout({ children }: { children: React.ReactNod
         <div className="mx-auto flex h-[4.5rem] max-w-[1500px] items-center gap-4 px-4 sm:px-6 lg:px-8">
           <Button variant="ghost" size="icon" className="text-slate-300 lg:hidden" onClick={() => setMobileOpen(value => !value)} aria-label="Toggle navigation">{mobileOpen ? <X /> : <Menu />}</Button>
           <Link href="/" className="flex shrink-0 items-center gap-3">
-            <img src="/manus-storage/smartgen-logo-icon_11b9ba1e.svg" alt="SmartGen" className="h-9 w-9 object-contain" />
+            <img src="https://raw.githubusercontent.com/bayzed123/SmartGenQR.oi/main/assets/img/logo-icon.svg" alt="SmartGen" className="h-9 w-9 object-contain" />
             <span className="hidden text-base font-bold tracking-tight sm:block">Smart<span className="text-cyan-300">Gen</span> <span className="font-medium text-slate-500">Community</span></span>
           </Link>
           <nav className="ml-5 hidden items-center gap-1 lg:flex">

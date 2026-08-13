@@ -34,7 +34,7 @@ This project uses a hybrid deployment model to balance public accessibility with
 ### Deployment
 - **Frontend**: Automatically deployed to GitHub Pages on every push to `main`.
 - **Backend**: Managed and deployed via the Manus platform.
-- **Required GitHub Actions variable**: Add the non-secret repository variable `VITE_API_BASE_URL` with the public URL of the published Manus backend, for example `https://community-api.example.com`. The workflow already sets the public Pages URL and never requires API keys in the public repository.
+- **Required GitHub Actions setting**: Add `VITE_API_BASE_URL` as a repository variable or secret with the public HTTPS URL of the published Manus backend, for example `https://community-api.example.com`. Never use `manus-webdev://62fdfaef`, a localhost URL, or an API key. The workflow already sets the public Pages URL and never requires API keys in the public repository.
 
 ## License
 MIT · © 2026 SmartGen
