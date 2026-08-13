@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartGen Platform Community</title>
+    <script>
+      (function () {
+        var repo = "/Smartgen-Platform-Community";
+        var path = window.location.pathname.indexOf(repo) === 0 ? window.location.pathname.slice(repo.length) : window.location.pathname;
+        var query = window.location.search;
+        var hash = window.location.hash;
+        var target = repo + "/?p=" + encodeURIComponent(path || "/") + (query ? "&q=" + encodeURIComponent(query.slice(1)) : "") + hash;
+        window.location.replace(target);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>

@@ -1,0 +1,22 @@
+# Smartgen Platform Community TODO
+
+- [x] Initialize project and audit template
+- [x] Design database schema for categories, posts, replies, ratings, profiles, and badges
+- [x] Generate Drizzle migration and apply via webdev_execute_sqlion
+- [x] Implement query helpers in server/db.ts
+- [x] Implement protected tRPC routers for community interactions
+- [x] Build unauthenticated landing page with login prompt and zero community exposure
+- [x] Build authenticated community layout with top nav (Topics, Categories, Groups, Guidelines, More dropdown) and sidebar linking to SmartGen NexusLeads developer docs
+- [x] Build category listing page with post counts and descriptions
+- [x] Build discussion threads, post creation, replies, and solution marking
+- [x] Build user profile page with stats, rating score, solutions provided, and badges
+- [x] Build contributor rating system with visible badges next to usernames
+- [x] Run type checking, build, and verification
+- [x] Add mutation error states and toasts for reply creation, reaction toggling, and solution marking
+- [x] Add loading and empty/error states to ProfilePage before showing not-found UI
+- [x] Replace hardcoded username rating badges with real per-user rating data wherever badges appear
+- [ ] Create private GitHub repository for Smartgen Platform Community
+- [ ] Implement webhook notification triggers on accepted solutions
+- [ ] Implement admin view for category creation and reordering
+- [ ] Change Smartgen Platform Community repository visibility from private to public for GitHub Pages hosting
+- [ ] Verify public repository contains no credentials, environment files, or secret values
