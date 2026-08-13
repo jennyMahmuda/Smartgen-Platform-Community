@@ -20,7 +20,7 @@
 - [x] Implement admin view for category creation and reordering
 - [x] Change Smartgen Platform Community repository visibility from private to public for GitHub Pages hosting
 - [x] Verify public repository contains no credentials, environment files, or secret values
-- [ ] Implement a real accepted-solution webhook integration with configurable destination, signed delivery, and delivery regression coverage
+- [x] Implement a real accepted-solution webhook integration with configurable destination, signed delivery, and delivery regression coverage
 - [x] Fix GitHub Pages serving README instead of the built SmartGen Community React frontend
 - [x] Verify GitHub Pages deploys the dist/public artifact and the Manus backend URL is configured without exposing secrets
 - [x] Replace the Manus-only logo storage path with the official public SmartGen logo asset for GitHub Pages

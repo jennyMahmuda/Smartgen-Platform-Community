@@ -26,6 +26,7 @@ import {
 } from "./db";
 import { getDb } from "./db";
 import { communityPosts, communityReplies } from "../drizzle/schema";
+import { createSolutionAcceptedEvent, deliverSolutionAcceptedWebhook } from "./webhooks";
 import { eq } from "drizzle-orm";
 
 const postListInput = z.object({ categoryId: z.number().int().positive().optional() }).optional();
@@ -113,6 +114,7 @@ export const appRouter = router({
           if (!reply[0] || reply[0].postId !== input.postId) throw new TRPCError({ code: "BAD_REQUEST", message: "Reply does not belong to this discussion" });
           const newlyAccepted = post.acceptedReplyId !== input.replyId;
           let notificationDelivered = false;
+          let webhookDelivered = false;
           await markCommunityReplyAccepted(input.replyId, input.postId);
           if (post.categorySlug === "support") await incrementUserStat(reply[0].authorId, "problemsResolved");
           if (newlyAccepted) {
@@ -121,8 +123,16 @@ export const appRouter = router({
               content: `${post.authorName || "A member"} accepted a solution in “${post.title}”. The accepted reply was provided by ${reply[0].authorId === ctx.user.id ? (ctx.user.name || ctx.user.email || "a member") : `member #${reply[0].authorId}`}. Review the discussion in the community dashboard.`,
             });
             if (!notificationDelivered) console.warn(`[Community] Accepted-solution notification was not delivered for post ${input.postId}`);
+            webhookDelivered = await deliverSolutionAcceptedWebhook(createSolutionAcceptedEvent({
+              postId: input.postId,
+              title: post.title,
+              categorySlug: post.categorySlug,
+              postAuthorId: post.authorId,
+              replyId: input.replyId,
+              replyAuthorId: reply[0].authorId,
+            }));
           }
-          return { success: true, notificationDelivered };
+          return { success: true, notificationDelivered, webhookDelivered };
         }),
     }),
 
