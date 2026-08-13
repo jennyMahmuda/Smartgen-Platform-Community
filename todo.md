@@ -25,3 +25,10 @@
 - [x] Verify GitHub Pages deploys the dist/public artifact and the Manus backend URL is configured without exposing secrets
 - [x] Replace the Manus-only logo storage path with the official public SmartGen logo asset for GitHub Pages
 - [x] Make the Pages workflow consume the backend URL from repository settings and reject non-HTTP Manus checkpoint URIs
+- [x] Add Resend email magic-link authentication alongside Manus OAuth
+- [x] Create email magic-link database table and token dispatch via Resend API
+- [x] Build email login modal / view in the community frontend and test end-to-end
+- [ ] Run a real Resend magic-link end-to-end test from request through callback and authenticated community entry
+- [ ] Capture browser verification of the email-login dialog and expired/used-link failure handling
+- [ ] Fix Resend magic-link URLs that currently point to api.manus.ai instead of the published SmartGen backend
+- [ ] Verify the published `/api/email/verify` route and complete a real email login retry

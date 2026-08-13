@@ -27,6 +27,7 @@ import {
 import { getDb } from "./db";
 import { communityPosts, communityReplies } from "../drizzle/schema";
 import { createSolutionAcceptedEvent, deliverSolutionAcceptedWebhook } from "./webhooks";
+import { requestMagicLink } from "./emailAuth";
 import { eq } from "drizzle-orm";
 
 const postListInput = z.object({ categoryId: z.number().int().positive().optional() }).optional();
@@ -36,6 +37,18 @@ export const appRouter = router({
 
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
+    requestEmailLogin: publicProcedure
+      .input(z.object({ email: z.string().trim().email().max(320) }))
+      .mutation(async ({ input }) => {
+        try {
+          return await requestMagicLink(input.email);
+        } catch (error) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: error instanceof Error ? error.message : "Unable to send sign-in email",
+          });
+        }
+      }),
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });

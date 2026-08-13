@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, inArray, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gt, inArray, isNull, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
   CommunityCategory,
@@ -12,6 +12,7 @@ import {
   communityUserBadges,
   communityUserStats,
   contributorRatings,
+  emailLoginTokens,
   users,
 } from "../drizzle/schema";
 import { ENV } from "./_core/env";
@@ -81,6 +82,50 @@ export async function getUserById(id: number) {
   if (!db) return undefined;
   const result = await db.select().from(users).where(eq(users.id, id)).limit(1);
   return result[0];
+}
+
+export async function getUserByEmail(email: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(users).where(eq(users.email, email)).limit(1);
+  return result[0];
+}
+
+export async function ensureEmailUser(input: { email: string; openId: string; name: string }) {
+  const existing = await getUserByEmail(input.email);
+  const openId = existing?.openId ?? input.openId;
+  await upsertUser({
+    openId,
+    email: input.email,
+    name: existing?.name || input.name,
+    loginMethod: "resend",
+    lastSignedIn: new Date(),
+  });
+  return getUserByOpenId(openId);
+}
+
+export async function issueEmailLoginToken(input: { email: string; tokenHash: string; expiresAt: Date }) {
+  const db = await getDb();
+  if (!db) return false;
+  await db.delete(emailLoginTokens).where(eq(emailLoginTokens.email, input.email));
+  await db.insert(emailLoginTokens).values(input);
+  return true;
+}
+
+export async function consumeEmailLoginToken(tokenHash: string) {
+  const db = await getDb();
+  if (!db) return undefined;
+  return db.transaction(async tx => {
+    const now = new Date();
+    const updateResult = await tx
+      .update(emailLoginTokens)
+      .set({ usedAt: now })
+      .where(and(eq(emailLoginTokens.tokenHash, tokenHash), isNull(emailLoginTokens.usedAt), gt(emailLoginTokens.expiresAt, now)));
+    const affectedRows = Number((updateResult as { affectedRows?: number }).affectedRows ?? 0);
+    if (affectedRows !== 1) return undefined;
+    const result = await tx.select().from(emailLoginTokens).where(eq(emailLoginTokens.tokenHash, tokenHash)).limit(1);
+    return result[0];
+  });
 }
 
 export async function getCommunityCategories() {

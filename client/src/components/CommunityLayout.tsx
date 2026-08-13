@@ -1,14 +1,46 @@
 import { Link, useLocation } from "wouter";
-import { useState } from "react";
-import { BookOpen, ChevronDown, Compass, FileQuestion, Flame, Group, LifeBuoy, Menu, MessageSquare, MoreHorizontal, Settings2, Sparkles, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { BookOpen, ChevronDown, Compass, FileQuestion, Flame, Group, LifeBuoy, Mail, Menu, MessageSquare, MoreHorizontal, Settings2, ShieldCheck, Sparkles, X } from "lucide-react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { trpc } from "@/lib/trpc";
 import { startLogin } from "@/const";
 
 const docsUrl = "https://jennymahmuda.github.io/Smartgen-Nexuses-Lead-Collector/";
+
+function EmailLoginDialog({ triggerLabel = "Sign in with email", size = "default" as const }: { triggerLabel?: string; size?: "default" | "lg" }) {
+  const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const requestLogin = trpc.auth.requestEmailLogin.useMutation();
+  useEffect(() => {
+    const openForAuth = () => setOpen(true);
+    window.addEventListener("smartgen:auth-required", openForAuth);
+    return () => window.removeEventListener("smartgen:auth-required", openForAuth);
+  }, []);
+  const submit = (event: React.FormEvent) => {
+    event.preventDefault();
+    requestLogin.mutate({ email: email.trim() });
+  };
+  return <>
+    <Button size={size} onClick={() => setOpen(true)} className={size === "lg" ? "rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 px-7 text-slate-950 shadow-[0_14px_50px_rgba(41,203,225,.2)] hover:from-indigo-400 hover:to-cyan-300" : "rounded-full bg-white px-5 text-sm font-semibold text-slate-950 hover:bg-cyan-100"}>
+      <Mail className="mr-2 h-4 w-4" />{triggerLabel}
+    </Button>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent className="border-white/10 bg-[#11152b] text-white sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2"><ShieldCheck className="h-5 w-5 text-cyan-300" />Email sign-in</DialogTitle>
+          <DialogDescription className="text-slate-400">We’ll send a secure one-time link. No password is needed, and the link expires after 15 minutes.</DialogDescription>
+        </DialogHeader>
+        {requestLogin.isSuccess ? <div className="space-y-4"><div className="rounded-2xl border border-emerald-300/20 bg-emerald-300/10 p-4 text-sm leading-6 text-emerald-100">Check <strong>{email}</strong> for your SmartGen Community sign-in link. You can close this window after opening the email.</div><Button type="button" onClick={() => { requestLogin.reset(); setEmail(""); }} className="w-full rounded-xl bg-white text-slate-950 hover:bg-cyan-100">Use another email</Button></div> : <form onSubmit={submit} className="space-y-5"><div><Label htmlFor="community-email" className="text-slate-300">Email address</Label><Input id="community-email" type="email" value={email} onChange={event => setEmail(event.target.value)} placeholder="you@example.com" autoComplete="email" required className="mt-2 border-white/10 bg-white/5 text-white placeholder:text-slate-600" /></div>{requestLogin.error && <p className="text-sm text-rose-300">{requestLogin.error.message}</p>}<Button disabled={requestLogin.isPending || !email.trim()} className="w-full rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-400 font-semibold text-slate-950 hover:from-indigo-400 hover:to-cyan-300">{requestLogin.isPending ? "Sending secure link…" : "Send sign-in link"}</Button><p className="text-center text-xs text-slate-500">Prefer the existing Manus login? <button type="button" onClick={() => startLogin()} className="font-semibold text-cyan-300 hover:text-cyan-200">Continue with Manus</button></p></form>}
+      </DialogContent>
+    </Dialog>
+  </>;
+}
 
 function initials(name?: string | null, email?: string | null) {
   const value = name || email || "SmartGen";
@@ -30,7 +62,7 @@ export function LoginPrompt() {
             <img src="https://raw.githubusercontent.com/bayzed123/SmartGenQR.oi/main/assets/img/logo-icon.svg" alt="SmartGen" className="h-9 w-9 object-contain" />
             <span className="text-lg font-bold tracking-tight">Smart<span className="text-cyan-300">Gen</span></span>
           </Link>
-          <Button onClick={() => startLogin()} className="rounded-full bg-white px-5 text-sm font-semibold text-slate-950 hover:bg-cyan-100">Sign in</Button>
+          <EmailLoginDialog />
         </header>
         <section className="grid flex-1 items-center gap-12 py-20 lg:grid-cols-[1.05fr_.95fr]">
           <div>
@@ -38,7 +70,7 @@ export function LoginPrompt() {
             <h1 className="max-w-3xl text-5xl font-semibold leading-[1.02] tracking-[-0.055em] sm:text-7xl">The community layer for people building what’s next.</h1>
             <p className="mt-7 max-w-xl text-lg leading-8 text-slate-300">Ask better questions, share proven workflows, and find the contributors who turn hard problems into clear solutions.</p>
             <div className="mt-9 flex flex-wrap gap-3">
-              <Button onClick={() => startLogin()} size="lg" className="rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 px-7 text-slate-950 shadow-[0_14px_50px_rgba(41,203,225,.2)] hover:from-indigo-400 hover:to-cyan-300">Enter the community <span className="ml-2">→</span></Button>
+              <EmailLoginDialog triggerLabel="Enter the community" size="lg" />
               <a href={docsUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/15 px-6 py-3 text-sm font-semibold text-slate-200 transition hover:border-cyan-300/50 hover:text-cyan-200"><BookOpen className="h-4 w-4" /> Developer docs</a>
             </div>
           </div>

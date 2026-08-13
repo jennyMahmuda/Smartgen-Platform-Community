@@ -22,6 +22,22 @@ export const users = mysqlTable("users", {
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
 });
 
+export const emailLoginTokens = mysqlTable(
+  "email_login_tokens",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    email: varchar("email", { length: 320 }).notNull(),
+    tokenHash: varchar("tokenHash", { length: 64 }).notNull(),
+    expiresAt: timestamp("expiresAt").notNull(),
+    usedAt: timestamp("usedAt"),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+  },
+  table => ({
+    tokenHashUnique: uniqueIndex("email_login_tokens_token_hash_unique").on(table.tokenHash),
+    emailIndex: index("email_login_tokens_email_idx").on(table.email),
+  }),
+);
+
 export const communityCategories = mysqlTable(
   "community_categories",
   {
